@@ -8,7 +8,7 @@
 #include "../header/ServerTCP.h"
 
 ServerTCP::ServerTCP(int portNo) :
-		portNo(portNo), newSokcfd(0), sockfd(0) {
+		newSokcfd(0), sockfd(0), portNo(portNo) {
 
 	struct sockaddr_in servAddr = { 0 };
 	struct sockaddr_in clientAddr = { 0 };
@@ -32,6 +32,10 @@ void ServerTCP::start(struct sockaddr_in servAddr, int portNo, struct sockaddr_i
 
 	if (bind(sockfd, (struct sockaddr*) (&servAddr), sizeof(servAddr)) < 0)
 		error("ERROR, cant binding socket\n");
+	else
+		std::cout << "INFO, bind success socket: "
+				  << inet_ntoa(servAddr.sin_addr)
+				  << ":" << ntohs(servAddr.sin_port);
 
 	listen(sockfd, 10);
 	socklen_t clientLength = sizeof(clientAddr);
